@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:reader_tracker/models/book.dart';
 import 'package:reader_tracker/network/network.dart';
+import 'package:reader_tracker/pages/books_detail.dart';
+
+import '../components/grid_view_widget.dart';
+import '../utils/arguments/book_details_arguments.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    _searchBooks("Android");
+    _searchBooks("flutter");
     super.initState();
   }
 
@@ -48,48 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onSubmitted: (query) => _searchBooks(query),
               ),
             ),
-            Expanded(
-                child: GridView.builder(
-                    itemCount: _books.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, childAspectRatio: 0.6),
-                    itemBuilder: (context, index) {
-                      final Book book = _books[index];
-                      return Container(
-                        margin: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surfaceVariant,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(18.0),
-                              child: Image.network(
-                                  book.imageLinks['thumbnail'] ?? '',
-                                  scale: 1.2),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                book.title,
-                                style: Theme.of(context).textTheme.titleSmall,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                book.authors.join(', & '),
-                                style: Theme.of(context).textTheme.bodySmall,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    }))
+            GridViewWidget(books: _books)
             // Expanded(
             //   child: SizedBox(
             //     width: double.infinity,
